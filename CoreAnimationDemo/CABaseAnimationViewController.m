@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface CABaseAnimationViewController ()<CAAnimationDelegate>
-@property (nonatomic, strong) CALayer* ballLayer;
+@property (nonatomic, strong) CALayer* testLayer;
 @end
 
 @implementation CABaseAnimationViewController
@@ -24,59 +24,67 @@
 	self.view.backgroundColor = [UIColor whiteColor];
 	
 	
-	self.ballLayer = [CALayer layer];
-	self.ballLayer.backgroundColor = [UIColor redColor].CGColor;
-	self.ballLayer.bounds = CGRectMake(0, 0, 60, 60);
-	self.ballLayer.position  = self.view.center;
-	self.ballLayer.masksToBounds = YES;
-//	self.ballLayer.cornerRadius = 30;
+	self.testLayer = [CALayer layer];
+	self.testLayer.backgroundColor = [UIColor redColor].CGColor;
+	self.testLayer.bounds = CGRectMake(0, 0, 60, 60);
+	self.testLayer.position  = self.view.center;
+	self.testLayer.masksToBounds = YES;
+//	self.testLayer.cornerRadius = 30;
 	
-	[self.view.layer addSublayer:self.ballLayer];
+	[self.view.layer addSublayer:self.testLayer];
 }
-
 
 
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-	UITouch* touch = [touches anyObject];
+	//rotation
 	
-	CGPoint point = [touch locationInView:self.view];
-	
-	
-	printf("%f, %f\n", point.x, point.y);
+	//创建 BaseAnimation
+//	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
 	
 	
-	[self animationAtPoint:point];
-	
-}
-
-
-- (void)animationAtPoint:(CGPoint )point
-{
-	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+	//启始值
 //	[animation setFromValue:@1];
+	
+	//结束值
 //	[animation setToValue:@4];
-	[animation setByValue:@5];
-	[animation setDuration:2.0];
-	[animation setDelegate:self];
-	animation.fillMode = kCAFillModeForwards;
-	animation.removedOnCompletion = NO;
-//	[self.ballLayer setPosition:point];
-	[self.ballLayer addAnimation:animation forKey:nil];
+	
+//	//倍数值
+//	[animation setByValue:@5];
+//	
+//	//持续时间
+//	[animation setDuration:2.0];
+//	
+//	//代理
+//	[animation setDelegate:self];
+	
+	//模式
+//	animation.fillMode = kCAFillModeForwards;
+//	animation.removedOnCompletion = NO;
+
+	//添加动画-执行动画
+//	[self.testLayer addAnimation:animation forKey:nil];
+	
+	
+	
+	
+	//创建 BaseAnimation
+//	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"bounds"];
+//	
+//	[animation setToValue:[NSValue valueWithCGRect:CGRectMake(0, 0, 400, 400)]];
+//	[self.testLayer addAnimation:animation forKey:nil];
+	
+	CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+	CATransform3D transform = CATransform3DMakeScale(0.5, 0.5, 1.0); //x, y, z
+	[animation setToValue:[NSValue valueWithCATransform3D:transform]];
+	[self.testLayer addAnimation:animation forKey:nil];
 }
 
-
-/* Called when the animation begins its active duration. */
 
 - (void)animationDidStart:(CAAnimation *)anim {
 	printf("%s\n", __FUNCTION__);
 }
-
-/* Called when the animation either completes its active duration or
- * is removed from the object it is attached to (i.e. the layer). 'flag'
- * is true if the animation reached the end of its active duration
- * without being removed. */
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
 	printf("%s\n", __FUNCTION__);
